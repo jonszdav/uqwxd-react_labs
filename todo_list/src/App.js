@@ -24,12 +24,19 @@ const App = () => {
     }
   }
 
-  function handleDelete(e){
-    const index = todos.indexOf(e.target.value);
-    if (index > -1) {
-        todos.splice(index, 1);
-    }
-    setTodos(todos);
+  function handleDelete(id){
+    var updatedTodos = todos.filter((x) => x.id != id);
+    setTodos(updatedTodos);
+  }
+
+  function toggleComplete(id) {
+    let updatedTodos = [...todos].map((todo) => {
+      if (todo.id === id) {
+        todo.completed = !todo.completed;
+      }
+      return todo;
+    });
+    setTodos(updatedTodos);
   }
 
   return (
@@ -47,7 +54,8 @@ const App = () => {
             todos.map((todo) =>
                 <div className="todo" key={todo.id}>
                     <div>{todo.text}</div>
-                    <button type="delete" onClick={handleDelete}>Delete</button>
+                    <button type="delete" onClick={() => handleDelete(todo.id)}>Delete</button>
+                    <input type="checkbox" id="completed" checked={todo.completed} onChange={() => toggleComplete(todo.id)}/>
                 </div>)
         }
 
